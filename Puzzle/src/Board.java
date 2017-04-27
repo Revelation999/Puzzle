@@ -62,10 +62,18 @@ public class Board
 			}
 		public void removePiece(Piece piece, ArrayList <Piece> list)
 		{
-			list.add(piece);
+			list.add(0, piece);
 			for(int r = 0; r < board.length; r++)
 					for (int c = 0; c < board[0].length; c++)
 							if (board[r][c].getColor()==piece.getColor())
 								board[r][c] = new Hole('x', false, Math.random());
+		}
+		public boolean isFinished()
+		{
+			boolean rtn = true;
+			for (Hole[] hole: board)
+				for (Hole h: hole)
+					rtn = rtn&&h.isFilled();
+			return rtn;
 		}
 	}

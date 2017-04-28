@@ -2,10 +2,12 @@
 public class Piece {
 	private char color;
 	private int[][] position;
+	private boolean isOnBoard;
 	public Piece(char c, int [][] pos)
 	{
 		color = c;
 		position = pos;
+		isOnBoard = false;
 	}
 	public char getColor() {
 		return color;
@@ -26,6 +28,18 @@ public class Piece {
 	{
 		for (int[] i : position)
 			i[0] = -i[0];
+	}
+	public boolean isOnBoard()
+	{
+		return isOnBoard;
+	}
+	public void putOn()
+	{
+		isOnBoard = true;
+	}
+	public void takeAway()
+	{
+		isOnBoard = false;
 	}
 	public String toString()
 	{

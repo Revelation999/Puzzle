@@ -5,10 +5,11 @@ public class Runner {
 	{
 		Board board = new Board(4);
 		generatePiece();
-		int r = 0; int c = 0;
-		while(!board.isFinished())
+		int r = 0, c = 0, count = 0;
+		while(!board.isFinished()&&!AllOnBoard())
 			{
-				
+				if (!list.get(count).isOnBoard()&&board.searchSpot(list.get(count), r, c))
+					count++;
 			}
 		board.printBoard();
 	}
@@ -28,4 +29,11 @@ public class Runner {
 		list.add(twig);
 	}
 	
+	public static boolean AllOnBoard()
+	{
+		for (Piece p: list)
+			if (!p.isOnBoard())
+				return false;
+		return true;
+	}
 }

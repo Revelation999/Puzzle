@@ -10,22 +10,24 @@ public class Board
 				for (int c = 0; c < board[0].length; c++)
 					board[r][c] = (r+c<board.length && r>=3 && c >=3)? new Hole('x', false, Math.random()): new Hole('-', true, 0);
 		}
-		public boolean tryFit(Piece piece, int r, int c, ArrayList<Piece> llist)
+		public boolean tryFit(Piece piece, int r, int c)
 			{
-				llist.remove(piece);
 				boolean canFit = true;
 				int[][] list = piece.getPosition();
 				for (int[] i : list)
 					canFit =canFit && !board[r+i[0]][c+i[1]].isFilled();
 				if (canFit)
+					{
+					piece.putOn();
 					for (int[] i : list)
 					{
 						board[r+i[0]][c+i[1]].setColor(piece.getColor());
 						board[r+i[0]][c+i[1]].setFilled(true);
 					}
+					}
 				return canFit;
 			}
-		public void searchSpot(Piece piece, int startRow, int startCol)
+		public boolean searchSpot(Piece piece, int startRow, int startCol)
 			{
 				boolean fitIn = false;
 				int r = startRow;
@@ -39,7 +41,7 @@ public class Board
 						{
 							if (!board[r][c].isFilled())
 							{
-							fitIn = tryFit(piece, r, c, Runner.list);
+							fitIn = tryFit(piece, r, c);
 							if (fitIn) break;
 							if (count==3) piece.flip();
 							piece.rotate();
@@ -50,6 +52,7 @@ public class Board
 					}
 					r++;
 				}
+				return fitIn;
 			}
 		public void printBoard()
 			{
@@ -60,9 +63,9 @@ public class Board
 					System.out.println();
 				}
 			}
-		public void removePiece(Piece piece, ArrayList <Piece> list)
+		public void removePiece(Piece piece)
 		{
-			list.add(0, piece);
+			piece.takeAway();
 			for(int r = 0; r < board.length; r++)
 					for (int c = 0; c < board[0].length; c++)
 							if (board[r][c].getColor()==piece.getColor())
